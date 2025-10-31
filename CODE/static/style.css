@@ -1,0 +1,180 @@
+/* Grundlegendes Layout */
+html {
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+}
+
+body {
+    margin: 0;
+}
+
+h1 {
+    font-size: 1.8rem; /* rem -> x-fache der Wurzelgröße (<html>) */
+    color: white;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #143642;
+}
+
+/* Navigationsleiste */
+.topnav {
+    overflow: hidden;
+    background-color: #143642;
+}
+
+/* Seiteninhalt */
+.content {
+    padding: 30px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Karten */
+.card {
+    background-color: #F8F7F9;
+    box-shadow: 2px 2px 12px 1px rgba(140,140,140,0.5);
+    padding-top: 10px;
+    padding-bottom: 20px;
+}
+
+/* Buttons */
+.button {
+    padding: 15px 50px;
+    font-size: 24px;
+    text-align: center;
+    outline: none;
+    color: #fff;
+    background-color: #0f8b8d;
+    border: none;
+    border-radius: 5px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    touch-action: none;  
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
+.button:active {
+    background-color: #0f8b8d;
+    box-shadow: 2px 2px #CDCDCD;
+    transform: translateY(2px);
+}
+
+/* Status-Anzeige */
+.state {
+    font-size: 1.5rem;
+    color: #8c8c8c;
+    font-weight: bold;
+}
+
+/* Overlay */
+.overlay {
+    position: fixed;
+    top: 100%;
+    left: 100%;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999; /* Overlay ist hinter dem Popup */
+    display: none; /* Standardmäßig versteckt */
+}
+
+/* Popup */
+.popup {
+    position: fixed;
+    top: 100%;
+    left: 100%;
+    transform: translate(-50%, -50%); /* Zentriert es horizontal */
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    border-radius: 8px;
+    padding: 20px;
+    z-index: 1000; /* Höher als das Overlay */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    display: none; /* Standardmäßig versteckt */
+}
+
+.popup button {
+    margin-top: 10px;
+    padding: 10px 15px;
+    background-color: #f5c6cb;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #721c24;
+}
+
+.popup button:hover {
+    background-color: #f1b0b7;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+  margin: 10px;
+}
+
+/* Verstecke das Standard-Checkbox-Element */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Slider-Stil */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 34px;
+}
+
+/* Kreis im Inneren */
+.slider::before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+/* Wenn Checkbox aktiv ist */
+input:checked + .slider {
+  background-color: #4CAF50;
+}
+
+/* Bewegung des Kreises beim Umschalten */
+input:checked + .slider::before {
+  transform: translateX(26px);
+}
+
+/* Runde Form */
+.slider.round {
+  border-radius: 34px;
+}
+
+#btn1.active {
+    background-color: green;
+}
+
+#btn1.blocked {
+    background-color: red;
+}

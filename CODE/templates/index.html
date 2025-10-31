@@ -1,0 +1,69 @@
+<!-- Gibt an, dass es sich um ein HTML5-Dokument handelt -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ESP Web Server</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script src="{{ url_for('static', filename='socket.io.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</head>
+<body>
+  <div class="topnav">
+    <h1>WebSocket Server Pv-Roboter</h1>
+  </div>
+
+  <div class="content">
+    <div class="card">
+      <h2>Steuerung Antrieb</h2>
+      <button id="btn1">Vor</button>
+      <button id="btn2">Rückwärts</button>
+      <button id="btn3">Drehung Rechts</button>
+      <button id="btn4">Drehung Links</button>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="card">
+      <h3>Walze</h3>
+      <button onclick="controlWalze('on')">EIN</button>
+      <button onclick="controlWalze('off')">AUS</button>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="card">
+      <h4>Wasser</h4>
+      <button onclick="controlWasser('on')">EIN</button>
+      <button onclick="controlWasser('off')">AUS</button>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="card">
+      <h5>Temperatur</h5>
+      <p class="state"><span id="temp">-- °C</span></p>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="card">
+      <h6>Test_Switch</h6>
+        <label class="switch">
+            <input type="checkbox" id="toggleSwitch">
+            <span class="slider round"></span>
+        </label>
+        <p id="statusText">Ruheposition</p>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="card">
+      <h7>cam</h7>
+       <img src="{{ url_for('video_feed') }}" width="640" height="480">
+    </div>
+  </div>
+
+</body>
+</html>

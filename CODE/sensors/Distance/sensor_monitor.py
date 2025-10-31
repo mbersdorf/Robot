@@ -1,34 +1,24 @@
-import time
 from threading import Thread
-# from input.Distance.Infrared import sensor
-from Pins.hardware import distance_sensor, stepper_left, stepper_right
+from Pins.hardware import front_distance_sensor, back_distance_sensor
+import time
+from Pins.hardware import movement
 
 stop_thread = False
+sensor_block_forward = False
+sensor_block_backward = False
+
 
 def start_sensor_monitor(socketio):
-
     def monitor():
-        global stop_thread
+        global stop_thread, sensor_block
         while not stop_thread:
-            try:
-                # if distance_sensor.is_danger(): # evtl und bewegung nach vorne??
-                    # socketio.emit("led_feedback", {"status": "blocked"})
-                # else:
-                    # socketio.emit("led_feedback", {"status": "active"})
-                    # stepper_left.stop()
-                    # stepper_right.stop()
-                    
-                    # if socketio:
-                    # socketio.emit("led_control", {"led": "1", "action": "off"})
-                        # print("block vorward") # test
-                        #print("⚠️ Absturzgefahr erkannt! Bewegung nach vorne gestoppt.")
-                        # socketio.emit("led_control", {"led": "2", "action": "off"})
-                        # socketio.emit("led_control", {"led": "3", "action": "off"})
-                        # socketio.emit("led_control", {"led": "4", "action": "off"})
-                    time.sleep(0.3)
-            except Exception as e:
-                break
+            sensor_block_forward = front_distance_sensor.is_danger()
+            sensor_block_backward = back_distance_sensor.is_danger()
+            movement_status = movement.get_movement()
+            if sensor_block_forward and movement_status == "moving_forward" or sensor_block_backward and movement_status == "moving_backward":
+                movement.stop()
             time.sleep(0.05)
 
     thread = Thread(target=monitor, daemon=True)
     thread.start()
+

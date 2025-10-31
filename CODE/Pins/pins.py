@@ -1,7 +1,8 @@
 # pins.py
 
 # Digitale Eingänge
-infrared_sensor_pin = 22
+infrared_sensor_front_pin = 22
+infrared_sensor_back_pin = 26
 
 # Digitale Ausgänge 
 

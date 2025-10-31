@@ -13,7 +13,7 @@ socketio = SocketIO(app)
 # WebSocket-Events auslagern
 register_all_events(socketio)
 
-sensor_thread = start_sensor_monitor(socketio)
+start_sensor_monitor(socketio)
 
 # Route für die Startseite
 @app.route("/")

@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment
+venv/
+.venv/
+
+# Logs und temporäre Dateien
+*.log
+*.save
+*.bak
+*.old
+*.tmp
+
+# IDEs
+.vscode/
+.idea/
+
+# System / Cache
+.DS_Store
+Thumbs.db
+
+# TIA Portal / GPIO / andere Tools
+*.lgd-*
+*.nfy0
+
+# Flask & SocketIO Laufzeitdateien
+instance/
+*.db
+*.sqlite3
+
+# Videos / Bilder / große Dateien (optional)
+*.mp4
+*.avi
+*.jpg
+*.png

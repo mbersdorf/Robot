@@ -16,6 +16,13 @@ document.addEventListener('DOMContentLoaded', () => {
   setupHoldButton('btn4', 4);
 
   setupSwitch('toggleSwitch', 5); 
+
+const speedSlider = document.getElementById('speedSlider');
+const speedValue = document.getElementById('speedValue');
+
+speedSlider.addEventListener('input', () => {
+  speedValue.textContent = `${speedSlider.value}%`;
+});
 });
 
 

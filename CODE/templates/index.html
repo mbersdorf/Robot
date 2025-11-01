@@ -17,18 +17,22 @@
     <!-- Linke Seite: Steuerung + Video -->
     <div class="left-panel">
       <div class="card control-card">
-        <h2>Antrieb</h2>
-        <div class="arrow-buttons">
-          <button id="btn1">⬆️</button>
-          <div class="side-buttons">
-            <button id="btn4">⬅️</button>
-            <button id="btn2">⬇️</button>
-            <button id="btn3">➡️</button>
-          </div>
-        </div>
-        <p id="status">Status</p>
+      <h2>Antrieb</h2>
+      <div class="dpad">
+        <button id="btn1" class="dpad-btn up">⬆️</button>
+        <button id="btn2" class="dpad-btn down">⬇️</button>
+        <button id="btn3" class="dpad-btn right">➡️</button>
+        <button id="btn4" class="dpad-btn left">⬅️</button>
       </div>
-
+      <p id="status">Status</p>
+        <div class="slider-container">
+          <input type="range" id="speedSlider" min="0" max="100" value="50">
+          <div id="speedValueContainer">
+            <span id="speedValue">50%</span>
+            <label for="speedSlider">Geschwindigkeit</label>
+        </div>
+</div>
+  </div>
       <div class="card video-card">
         <h3>Kamera</h3>
         <img src="{{ url_for('video_feed') }}" width="100%" height="auto">

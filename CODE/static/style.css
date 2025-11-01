@@ -19,23 +19,37 @@ body {
   height: calc(100vh - 60px); /* Höhe minus Topnav */
 }
 
-/* Linke Seite */
 .left-panel {
-  flex: 1;
-  padding: 5px;
+  flex: 1.5;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  /* Lässt die Elemente oben starten, statt mittig oder verteilt */
+  justify-content: flex-start; 
+  gap: 5px; /* weniger Abstand zwischen linken Cards */
+  padding: 5px;
 }
 
-/* Rechte Seite */
 .right-panel {
-  flex: 0.7;
-  padding: 5px;
+  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  justify-content: flex-start; /* oben ausrichten */
+  gap: 10px; /* optional, mehr Abstand rechts */
+  padding: 5px;
 }
+
+.left-panel .control-card {
+  width: 100%;       /* volle Breite des Panels */
+  max-width: 100%;   /* sicherstellen, dass es nicht größer wird */
+  margin: 0;         /* zentriert nicht mehr, direkt am Rand */
+  box-sizing: border-box; /* Padding wird innerhalb der Breite gerechnet */
+}
+
+.left-panel .video-card {
+  margin: 0 auto;
+  max-width: 100%;             /* volle Spaltenbreite */
+}
+
 
 /* Karten */
 .card {
@@ -104,8 +118,119 @@ input:checked + .slider:before {
 }
 
 /* Video responsive */
-.video-card img {
-  border-radius: 10px;
-  max-width: 100%;
+.left-panel .video-card img {
+  display: block;
+  width: 100%;
   height: auto;
+  border-radius: 10px;
+}
+
+/* ----------------------
+   Card Container
+----------------------- */
+.control-card {
+  padding: 20px;
+  text-align: center;
+  background:  #f5f5f5;
+  color: black;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  max-width: 400px;
+  margin: auto;
+}
+
+/* ----------------------
+   D-Pad Container
+----------------------- */
+.dpad {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  margin: 20px auto;
+  background: rgba(2, 0, 0, 0.05);
+  border-radius: 50%;
+}
+
+/* ----------------------
+   D-Pad Buttons
+----------------------- */
+.dpad-btn {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  background: #333;          /* normale Farbe */
+  border: none;
+  border-radius: 50%;
+  font-size: 20px;
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+  transition: transform 0.15s;  /* nur Transform animieren */
+}
+
+/* Button Positionen */
+.dpad-btn.up    { top: 0; left: 50%; transform: translateX(-50%); }
+.dpad-btn.down  { bottom: 0; left: 50%; transform: translateX(-50%); }
+.dpad-btn.left  { left: 0; top: 50%; transform: translateY(-50%); }
+.dpad-btn.right { right: 0; top: 50%; transform: translateY(-50%); }
+
+/* Scale nur beim Drücken */
+.dpad-btn.pressed {
+  transform: scale(1.1) !important;
+  background: #2196F3 !important;
+}
+
+.dpad-btn:active {
+  background: #2196F3;
+}
+
+.slider-container {
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column; /* Text unter Slider */
+  align-items: center;
+  gap: 5px;
+}
+
+#speedSlider {
+  -webkit-appearance: none;
+  width: 120px;
+  height: 6px;
+  border-radius: 5px;
+  background: #ddd;
+  outline: none;
+  transition: background 0.3s;
+}
+
+#speedSlider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #2196F3;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+  transition: transform 0.15s;
+}
+
+#speedSlider::-webkit-slider-thumb:active {
+  transform: scale(1.2);
+  background: #0b7dda;
+}
+
+#speedValueContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#speedValue {
+  font-weight: bold;
+  margin-bottom: 2px;
+}
+
+#speedValueContainer label {
+  font-size: 0.9em;
+  color: #555;
 }

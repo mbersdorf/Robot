@@ -117,6 +117,19 @@ function setupSwitch(switchId, output) {
   });
 }
 
+// Event empfangen
+  socket.on('movement_status', data => {
+      document.getElementById('status').innerText = data.status;
+  });
+
+  socket.on('valve_status', data => {
+      document.getElementById('valvestatus').innerText = data.valvestatus;
+  });
+  
+  socket.on('brush_status', data => {
+      document.getElementById('brushstatus').innerText = data.brushstatus;
+  });
+
 
 
 

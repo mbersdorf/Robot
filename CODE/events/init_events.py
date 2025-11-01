@@ -11,6 +11,5 @@ def register_all_events(socketio):
     register_wasser_events(socketio)
     register_linmotor_events(socketio)
 
-
     # Temperatur-Loop in eigenem Thread starten
     threading.Thread(target=temperature_loop, args=(socketio,), daemon=True).start()

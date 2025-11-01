@@ -22,6 +22,11 @@ class E18DN80NK:
     def is_danger(self) -> bool:
         """True, wenn Absturzgefahr erkannt"""
         return self.sensor.value == 0
+    
+    def cleanup(self):
+        """Gibt die Hardware frei, schließt den GPIO-Pin."""
+        self.sensor.close()
+        print("IR-Näherungssensor freigegeben.")
 
 
 # Beispielverwendung

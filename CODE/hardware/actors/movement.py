@@ -90,6 +90,11 @@ class TB6600:
             self.enable.close()
         print("GPIOs freigegeben.")
 
+    def set_speed(self, step_delay):
+        """Ändert die Schrittverzögerung während der Laufzeit"""
+        self.step_delay = step_delay
+        print(f"Neue step_delay: {self.step_delay}")
+
 
 # ============================================================
 # Movement-Klasse für den Roboter
@@ -117,28 +122,28 @@ class Movement:
     def move_forward(self):
         """Fährt den Roboter vorwärts."""
         self.stepper_left.start(direction="cw")
-        self.stepper_right.start(direction="cw")
+        self.stepper_right.start(direction="ccw")
         self._set_state("moving_forward")
         self.socketio.emit('movement_status', {'status': 'VORWÄRTS'})  # Status über SocketIO senden
 
     def move_backward(self):
         """Fährt den Roboter rückwärts."""
         self.stepper_left.start(direction="ccw")
-        self.stepper_right.start(direction="ccw")
+        self.stepper_right.start(direction="cw")
         self._set_state("moving_backward")
         self.socketio.emit('movement_status', {'status': 'RÜCKWÄRTS'})
 
     def turn_left(self):
         """Dreht den Roboter nach links."""
         self.stepper_left.start(direction="ccw")
-        self.stepper_right.start(direction="cw")
+        self.stepper_right.start(direction="ccw")
         self._set_state("turning_left")
         self.socketio.emit('movement_status', {'status': 'LINKS DREHEN'})
 
     def turn_right(self):
         """Dreht den Roboter nach rechts."""
         self.stepper_left.start(direction="cw")
-        self.stepper_right.start(direction="ccw")
+        self.stepper_right.start(direction="cw")
         self._set_state("turning_right")
         self.socketio.emit('movement_status', {'status': 'RECHTS DREHEN'})
 
@@ -175,5 +180,16 @@ class Movement:
         self.stepper_left.cleanup()
         self.stepper_right.cleanup()
         print("Movement GPIOs freigegeben.")
+
+    def set_speed(self, step_delay):
+        """
+        Setzt die Geschwindigkeit beider Motoren durch Anpassen der Schrittverzögerung.
+
+        Args:
+            step_delay (float): Neue Schrittverzögerung
+        """
+        self.stepper_left.set_speed(step_delay)
+        self.stepper_right.set_speed(step_delay)
+        print(f"Bewegungsgeschwindigkeit auf step_delay: {step_delay} gesetzt.")
     
 

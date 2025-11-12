@@ -10,7 +10,19 @@ def register_movement_button_events(socketio):
         led_id = data['led']
         action = data['action']
 
-        handle_movement(led_id, action)   
+        handle_movement(led_id, action)
+
+    @socketio.on("set_speed")
+    def handle_set_speed(data):
+        speed_percent = int(data['speed'])
+        
+        min_delay = 0.0005   # 100%
+        max_delay = 0.05     # 0%
+        # lineare Interpolation, invertiert
+        step_delay = max_delay - (speed_percent / 100) * (max_delay - min_delay)
+
+        objects.movement.set_speed(step_delay)
+        print(f"Setze Geschwindigkeit auf {speed_percent}% -> step_delay: {step_delay:.6f}s")
 
     @socketio.on('connect')
     def handle_connect():
@@ -32,8 +44,8 @@ def register_movement_button_events(socketio):
         actions = {
             "1": objects.movement.move_forward,
             "2": objects.movement.move_backward,
-            "3": objects.movement.turn_left,
-            "4": objects.movement.turn_right
+            "3": objects.movement.turn_right,
+            "4": objects.movement.turn_left
         }
 
         # Standard: wenn "off" -> stop

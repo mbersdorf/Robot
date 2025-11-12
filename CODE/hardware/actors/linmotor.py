@@ -6,35 +6,40 @@ class Linmotor:
     Kapselt die Hardwareansteuerung über einen digitalen Ausgang.
     """
 
-    def __init__(self, pin):
+    def __init__(self, pin_ausfahren, pin_einfahren):
         """
         Initialisiert den Linearmotor.
 
         Args:
             pin (int): GPIO-Pin, an dem der Linearmotor angeschlossen ist.
         """
-        self.pin = pin                      # Speichert den zugewiesenen GPIO-Pin
-        self.output = LED(pin)              # Initialisiert den digitalen Output über gpiozero.LED
-                                            # Hinweis: LED wird hier als einfacher Digital-Output genutzt
-        self.output.off()                   # Motor standardmäßig aus
+        self.pin_ausfahren = pin_ausfahren                      # Speichert den zugewiesenen GPIO-Pin //einfahren
+        self.pin_einfahren = pin_einfahren 
+        self.output_ausfahren = LED(pin_ausfahren)              # Initialisiert den digitalen Output über gpiozero.LED
+        self.output_einfahren = LED(pin_einfahren)              # Hinweis: LED wird hier als einfacher Digital-Output genutzt
+                                            
+        self.output_ausfahren.off()                   # Motor eingefahren
+        self.output_einfahren.on()
         self.is_open = False                # Zustand des Motors: False = aus, True = an
-        print(f"Linearmotor auf Pin {self.pin} initialisiert.")  # Info-Ausgabe beim Start
+        # print(f"Linearmotor auf Pin {self.pin} initialisiert.")  # Info-Ausgabe beim Start
         
 
-    def on(self):
+    def ausfahren(self):
         """
         Schaltet den Linearmotor ein.
         """
-        self.output.on()                    # Setzt den GPIO-Pin auf HIGH
+        self.output_ausfahren.on()                    # Setzt den GPIO-Pin auf HIGH
+        self.output_einfahren.off()
         self.is_open = True                 # Aktualisiert den internen Status
         print(f"Linearmotor eingeschaltet.")  # Ausgabe zur Statuskontrolle
 
 
-    def off(self):
+    def einfahren(self):
         """
         Schaltet den Linearmotor aus.
         """
-        self.output.off()                   # Setzt den GPIO-Pin auf LOW
+        self.output_ausfahren.off()                   # Setzt den GPIO-Pin auf LOW
+        self.output_einfahren.on()
         self.is_open = False                # Aktualisiert den internen Status
         print(f"Linearmotor ausgeschaltet.")  # Ausgabe zur Statuskontrolle
 
@@ -54,5 +59,6 @@ class Linmotor:
         Gibt die Hardware frei, schließt den GPIO-Pin.
         Sollte aufgerufen werden, wenn das Programm endet.
         """
-        self.output.close()                 # Freigabe des Pins über gpiozero
+        self.output_einfahren.close()                 # Freigabe des Pins über gpiozero
+        self.output_ausfahren.close()
         print(f"Linearmotor freigegeben.") # Info-Ausgabe

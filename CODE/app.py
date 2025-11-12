@@ -19,7 +19,7 @@ import sys
 from events.init_events import register_all_events, temperature_loop
 from hardware.objects import initialize_hardware
 from hardware.sensors.Distance.sensor_monitor import start_sensor_monitor, stop_sensor_monitor, stop_thread
-from hardware.sensors.cam.cam import gen_frames
+# from hardware.sensors.cam.cam import gen_frames
 
 
 # ============================================================
@@ -73,7 +73,7 @@ def index():
 def video_feed():
     """Liefert kontinuierlichen MJPEG-Stream der Kamera"""
     return Response(
-        gen_frames(),
+        # gen_frames(),
         mimetype="multipart/x-mixed-replace; boundary=frame"
     )
 

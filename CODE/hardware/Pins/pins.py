@@ -31,7 +31,8 @@ VALVE_PIN = 5
 BRUSH_PIN = 6
 
 # --- Linearmotor ---
-LINMOTOR_PIN = 25
+LINMOTOR_PIN_ausfahren = 16
+LINMOTOR_PIN_einfahren = 25
 
 
 # ============================================================

@@ -22,12 +22,17 @@ const speedValue = document.getElementById('speedValue');
 
 speedSlider.addEventListener('input', () => {
   speedValue.textContent = `${speedSlider.value}%`;
+  sendSpeed(speedSlider.value);
 });
 });
 
 
 function controlLED(led, action) {
   socket.emit('led_control', { led: led.toString(), action: action });
+}
+
+function sendSpeed(value) {
+  socket.emit('set_speed', { speed: value });
 }
 
 function setupHoldButton(buttonId, ledNumber) {
@@ -55,25 +60,6 @@ function setupHoldButton(buttonId, ledNumber) {
     controlLED(ledNumber, 'off');
   });
 }
-/*
-socket.on("led_feedback", (data) => { {
-  const btn1 = document.getElementById("btn1");
-  if(!btn1) 
-  return;
-
-    if(data.status === "blocked") {
-            //console.log(`LED ${data.led} blockiert wegen Gefahr`);
-            btn1.classList.add("blocked");  // z.B. rot färben
-            btn1.classList.remove("active");
-        } else if(data.status === "active") {
-            btn1.classList.add("active");   // z.B. grün
-            btn1.classList.remove("blocked");
-        } else {
-            btn1.classList.remove("active", "blocked"); // normal
-        }
-    }
-});
-*/
 
 
 function controlWalze(action) {

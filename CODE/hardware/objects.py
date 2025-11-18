@@ -45,7 +45,7 @@ def initialize_hardware(socketio):
     )
 
     # --- Linearmotor ---
-    linmotor = Linmotor(pins.LINMOTOR_PIN_ausfahren, pins.LINMOTOR_PIN_einfahren)
+    linmotor = Linmotor(pins.LINMOTOR_PIN_ausfahren, pins.LINMOTOR_PIN_einfahren, socketio)
 
     # --- Wasser-Ventil ---
     valve = Valve(pins.VALVE_PIN, socketio)

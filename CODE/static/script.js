@@ -1,13 +1,6 @@
 // Stellt die WebSocket-Verbindung her
 var socket = io();
 
-// Funktion zum Senden der Steuerbefehle
-// function controlLED(led, action) {
-//     socket.emit('led_control', {
-//         led: led.toString(),
-//         action: action
-//     });
-// }
 
 document.addEventListener('DOMContentLoaded', () => {
   setupHoldButton('btn1', 1);
@@ -15,7 +8,10 @@ document.addEventListener('DOMContentLoaded', () => {
   setupHoldButton('btn3', 3);
   setupHoldButton('btn4', 4);
 
-  setupSwitch('toggleSwitch', 5); 
+  setupLinButton('btn_out', 'out');
+  setupLinButton('btn_in', 'in');
+
+  // setupSwitch('toggleSwitch', 5); 
 
 const speedSlider = document.getElementById('speedSlider');
 const speedValue = document.getElementById('speedValue');
@@ -61,6 +57,32 @@ function setupHoldButton(buttonId, ledNumber) {
   });
 }
 
+function setupLinButton(buttonId, direction) {
+  const btn = document.getElementById(buttonId);
+    console.log("Button gefunden:", btn?.id); // Debug
+
+  if (!btn) {
+    console.error("Button nicht gefunden:", buttonId);
+    return;
+  }
+
+  // Maussteuerung
+  btn.addEventListener('mousedown', () => controlLin(direction, 'on'));
+  btn.addEventListener('mouseup', () => controlLin(direction, 'off'));
+  btn.addEventListener('mouseleave', () => controlLin(direction, 'off'));
+
+  // Touchsteuerung (Mobile)
+  btn.addEventListener('touchstart', (e) => {
+    e.preventDefault(); // verhindert Textkopieren oder Scrollen
+    controlLin(direction, 'on');
+  });
+
+  btn.addEventListener('touchend', (e) => {
+    e.preventDefault();
+    controlLin(direction,'off');
+  });
+}
+
 
 function controlWalze(action) {
     socket.emit('walze_control', {
@@ -74,11 +96,17 @@ function controlWasser(action) {
     });
 }
 
-function controlMotor(action) {
+  function controlMotor(action) {
     socket.emit('motor_control', {
         action: action
     });
-}
+  }
+
+  function controlLin(direction, action) {
+    socket.emit('Lin_control', {
+        direction: direction.toString(), action: action
+    });
+  }
 
 // Temperaturanzeige empfangen & anzeigen
 socket.on('temperature_update', function(data) {
@@ -89,26 +117,6 @@ socket.on('temperature_update', function(data) {
     //   alert("Warnung: Temperatur über 30°C!");
     // }
 });
-
-function setupSwitch(switchId, output) {
-  const sw = document.getElementById(switchId);
-  const status = document.getElementById('statusText');
-
-  if (!sw) {
-    console.error("Switch nicht gefunden:", switchId);
-    return;
-  }
-
-  sw.addEventListener('change', () => {
-    if (sw.checked) {
-      controlMotor('on');
-      status.textContent = `Arbeitsposition`;
-    } else {
-      controlMotor('off');
-      status.textContent = `Ruheposition`;
-    }
-  });
-}
 
 // Event empfangen
   socket.on('movement_status', data => {
@@ -121,6 +129,10 @@ function setupSwitch(switchId, output) {
   
   socket.on('brush_status', data => {
       document.getElementById('brushstatus').innerText = data.brushstatus;
+  });
+  
+  socket.on('lin_status', data => {
+      document.getElementById('linstatus').innerText = data.linstatus;
   });
 
 

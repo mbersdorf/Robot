@@ -15,6 +15,7 @@ import threading
 import signal
 import sys
 
+
 # --- Eigene Module ---
 from events.init_events import register_all_events, temperature_loop
 from hardware.objects import initialize_hardware
@@ -120,6 +121,18 @@ signal.signal(signal.SIGTERM, signal_handler)
 # 🔹 Programmstart
 # ============================================================
 
+
+import RPi.GPIO as GPIO
+import os
+
+LED_PIN = 20
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(LED_PIN, GPIO.OUT)
+
+# LED einschalten
+GPIO.output(LED_PIN, GPIO.HIGH)
+print("✅ Access Point aktiv – LED an")
+
 if __name__ == "__main__":
     # Starte Flask + SocketIO Server
     # Läuft auf allen Interfaces (0.0.0.0) und Port 5000
@@ -129,5 +142,6 @@ if __name__ == "__main__":
         host="0.0.0.0",
         port=5000,
         debug=True,
-        use_reloader=False
+        use_reloader=False,
+        allow_unsafe_werkzeug=True
     )

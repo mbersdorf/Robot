@@ -15,6 +15,7 @@ from hardware.actors.valve import Valve
 from hardware.actors.brush import Brush
 from hardware.actors.movement import Movement
 from hardware.actors.linmotor import Linmotor
+from hardware.actors.led_status import LED_PI_Status
 
 brush = None
 valve = None
@@ -23,6 +24,7 @@ linmotor = None
 front_distance_sensor = None
 back_distance_sensor = None
 temperature_sensor = None
+#LED_PI_Status = None
 
 
 
@@ -38,7 +40,7 @@ def initialize_hardware(socketio):
     # ============================================================
 
 
-    global brush, valve, movement, linmotor, front_distance_sensor, back_distance_sensor, temperature_sensor
+    global brush, valve, movement, linmotor, front_distance_sensor, back_distance_sensor, temperature_sensor, LED_PI_Status
     movement = Movement(
         stepper_right_pins=(pins.STEP_STEPPER_RIGHT, pins.DIR_STEPPER_RIGHT),
         stepper_left_pins=(pins.STEP_STEPPER_LEFT, pins.DIR_STEPPER_LEFT), socketio=socketio
@@ -52,6 +54,9 @@ def initialize_hardware(socketio):
 
     # --- Walze (Bürste) ---
     brush = Brush(pins.BRUSH_PIN, socketio)
+
+    # --- LED Status ---
+    led_PI_Status = LED_PI_Status(pins.LED_PIN)
 
 
     # ============================================================

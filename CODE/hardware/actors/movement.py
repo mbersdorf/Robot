@@ -24,7 +24,7 @@ class TB6600:
         """
         self.step = OutputDevice(step_pin)             # STEP-Pin als digitaler Ausgang
         self.dir = OutputDevice(dir_pin)               # DIR-Pin als digitaler Ausgang
-        self.enable = OutputDevice(enable_pin) if enable_pin is not None else None
+        self.enable = OutputDevice(enable_pin) if enable_pin is not None else None # ENABLE-Pin als digitaler Ausgang (optional)
         self.step_delay = step_delay                   # Zeit zwischen STEP-Pulsen
         self._running = False                          # Interner Status, ob Motor läuft
         self._thread = None                            # Thread, der Motor-Puls erzeugt
@@ -35,9 +35,9 @@ class TB6600:
         Endlosschleife für STEP-Pulse.
         Läuft in einem separaten Thread.
         """
-        while self._running:
-            self.step.on()
-            sleep(self.step_delay)
+        while self._running:               
+            self.step.on()              
+            sleep(self.step_delay)      
             self.step.off()
             sleep(self.step_delay)
 
@@ -113,6 +113,7 @@ class Movement:
         Args:
             stepper_right_pins (tuple): (STEP_PIN, DIR_PIN) für rechten Motor
             stepper_left_pins (tuple): (STEP_PIN, DIR_PIN) für linken Motor
+            socketio: SocketIO-Objekt für Statusmeldungen
         """
         self.stepper_left = TB6600(*stepper_left_pins)
         self.stepper_right = TB6600(*stepper_right_pins)

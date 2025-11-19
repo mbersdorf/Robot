@@ -121,18 +121,6 @@ signal.signal(signal.SIGTERM, signal_handler)
 # 🔹 Programmstart
 # ============================================================
 
-
-import RPi.GPIO as GPIO
-import os
-
-LED_PIN = 20
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(LED_PIN, GPIO.OUT)
-
-# LED einschalten
-GPIO.output(LED_PIN, GPIO.HIGH)
-print("✅ Access Point aktiv – LED an")
-
 if __name__ == "__main__":
     # Starte Flask + SocketIO Server
     # Läuft auf allen Interfaces (0.0.0.0) und Port 5000

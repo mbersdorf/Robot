@@ -3,6 +3,9 @@ pins.py
 Zentrale Definition aller GPIO-Pins und I2C-Adressen
 für digitale Ein- und Ausgänge des Roboters.
 """
+# ! Wichtig !
+# GPIO-Pin 21 wird von anderem Programm (shutdown.py) verwendet
+# nicht hier definieren oder nutzen!
 
 # ============================================================
 # 🔹 Digitale Eingänge
@@ -34,6 +37,8 @@ BRUSH_PIN = 6
 LINMOTOR_PIN_ausfahren = 16
 LINMOTOR_PIN_einfahren = 25
 
+# --- LED Status ---
+LED_PIN = 20
 
 # ============================================================
 # 🔹 Analoge Eingänge / I2C-Adressen

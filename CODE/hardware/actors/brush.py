@@ -12,6 +12,7 @@ class Brush:
 
         Args:
             pin (int): GPIO-Pin, an dem die Walze angeschlossen ist.
+            socketio: SocketIO-Objekt für Statusmeldungen
         """
         self.pin = pin                      # Speichert den zugewiesenen GPIO-Pin
         self.output = LED(pin)              # Initialisiert den digitalen Output über gpiozero.LED

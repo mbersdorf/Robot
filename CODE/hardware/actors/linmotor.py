@@ -12,16 +12,18 @@ class Linmotor:
 
         Args:
             pin (int): GPIO-Pin, an dem der Linearmotor angeschlossen ist.
+            socketio: SocketIO-Objekt für Statusmeldungen
         """
-        self.pin_ausfahren = pin_ausfahren                      # Speichert den zugewiesenen GPIO-Pin //einfahren
-        self.pin_einfahren = pin_einfahren
-        self.socketio = socketio            # SocketIO-Objekt für Statusmeldungen 
+        self.pin_ausfahren = pin_ausfahren                      # Speichert den zugewiesenen GPIO-Pin //ausfahren
+        self.pin_einfahren = pin_einfahren                      # Speichert den zugewiesenen GPIO-Pin //einfahren
+        self.socketio = socketio                                # SocketIO-Objekt für Statusmeldungen 
         self.output_ausfahren = LED(pin_ausfahren)              # Initialisiert den digitalen Output über gpiozero.LED
         self.output_einfahren = LED(pin_einfahren)              # Hinweis: LED wird hier als einfacher Digital-Output genutzt
-                                            
-        self.output_ausfahren.off()                   # Motor eingefahren
+
+        #Initialer Zustand: Motor aus                                    
+        self.output_ausfahren.off()                   
         self.output_einfahren.off()
-        self.is_open = False                # Zustand des Motors: False = aus, True = an
+        #self.is_open = False                # Zustand des Motors: False = aus, True = an
         # print(f"Linearmotor auf Pin {self.pin} initialisiert.")  # Info-Ausgabe beim Start
         
 
@@ -31,7 +33,7 @@ class Linmotor:
         """
         self.output_ausfahren.on()                    # Setzt den GPIO-Pin auf HIGH
         self.output_einfahren.off()
-        self.is_open = True                 # Aktualisiert den internen Status
+        #self.is_open = True                 # Aktualisiert den internen Status
         self.socketio.emit('lin_status', {'linstatus': 'Ausfahren'})  # Status über SocketIO senden
         print(f"Linearmotor ausfahren.")  # Ausgabe zur Statuskontrolle
 
@@ -42,7 +44,7 @@ class Linmotor:
         """
         self.output_ausfahren.off()                   # Setzt den GPIO-Pin auf LOW
         self.output_einfahren.on()
-        self.is_open = False                # Aktualisiert den internen Status
+        #self.is_open = False                # Aktualisiert den internen Status
         self.socketio.emit('lin_status', {'linstatus': 'Einfahren'})  # Status über SocketIO senden
         print(f"Linearmotor einfahren.")  # Ausgabe zur Statuskontrolle
 
@@ -52,19 +54,19 @@ class Linmotor:
         """
         self.output_ausfahren.off()                   # Setzt den GPIO-Pin auf LOW
         self.output_einfahren.off()
-        self.is_open = False                # Aktualisiert den internen Status
+        #self.is_open = False                # Aktualisiert den internen Status
         self.socketio.emit('lin_status', {'linstatus': 'Stopp'})  # Status über SocketIO senden
         print(f"Linearmotor gestoppt.")  # Ausgabe zur Statuskontrolle
 
 
-    def is_on(self):
-        """
-        Prüft, ob der Linearmotor eingeschaltet ist.
+    # def is_on(self):
+    #     """
+    #     Prüft, ob der Linearmotor eingeschaltet ist.
 
-        Returns:
-            bool: True, wenn Motor eingeschaltet, sonst False
-        """
-        return self.is_open                 # Gibt den aktuellen Status zurück
+    #     Returns:
+    #         bool: True, wenn Motor eingeschaltet, sonst False
+    #     """
+    #     return self.is_open                 # Gibt den aktuellen Status zurück
     
 
     def cleanup(self):

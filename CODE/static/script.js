@@ -2,139 +2,154 @@
 var socket = io();
 
 
+// Wird ausgeführt, sobald die Webseite geladen ist
 document.addEventListener('DOMContentLoaded', () => {
-  setupHoldButton('btn1', 1);
-  setupHoldButton('btn2', 2);
-  setupHoldButton('btn3', 3);
-  setupHoldButton('btn4', 4);
 
-  setupLinButton('btn_out', 'out');
-  setupLinButton('btn_in', 'in');
+  // Richtungssteuerung: Bewegung
+  setupControlButton('btn_forward',  'forward',  controlMovement);
+  setupControlButton('btn_backward', 'backward', controlMovement);
+  setupControlButton('btn_turn_right', 'turn_right', controlMovement);
+  setupControlButton('btn_turn_left', 'turn_left', controlMovement);
 
-  // setupSwitch('toggleSwitch', 5); 
+  // Linearbewegung (z. B. Ein-/Ausfahren)
+  setupControlButton('btn_out', 'out', controlLin);
+  setupControlButton('btn_in',  'in',  controlLin);
 
-const speedSlider = document.getElementById('speedSlider');
-const speedValue = document.getElementById('speedValue');
+  // Slider für Geschwindigkeit
+  const speedSlider = document.getElementById('speedSlider');
+  const speedValue = document.getElementById('speedValue');
 
-speedSlider.addEventListener('input', () => {
-  speedValue.textContent = `${speedSlider.value}%`;
-  sendSpeed(speedSlider.value);
+  // Aktualisiert Anzeige + sendet Speed an Server
+  speedSlider.addEventListener('input', () => {
+    speedValue.textContent = `${speedSlider.value}%`;
+    sendSpeed(speedSlider.value);
+  });
 });
-});
 
 
-function controlLED(led, action) {
-  socket.emit('led_control', { led: led.toString(), action: action });
+
+/**
+ * Bindet Maus- und Touch-Events an einen Button
+ * @param {string} buttonId - ID des Buttons
+ * @param {string} direction - Richtung für die Steuerung
+ * @param {function} controlFn - Funktion, die ausgeführt wird (z.B. controlMovement)
+ */
+function setupControlButton(buttonId, direction, controlFn) {
+
+  const btn = document.getElementById(buttonId);
+  console.log("Button gefunden:", btn?.id);
+
+  if (!btn) {
+    console.error("Button nicht gefunden:", buttonId);
+    return;
+  }
+
+  // Mausevents
+  btn.addEventListener('mousedown', () => controlFn(direction, 'on'));
+  btn.addEventListener('mouseup', () => controlFn(direction, 'off'));
+  btn.addEventListener('mouseleave', () => controlFn(direction, 'off'));
+
+  // Touch-Events (für Smartphones/Tablets)
+  btn.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    controlFn(direction, 'on');
+  });
+
+  btn.addEventListener('touchend', (e) => {
+    e.preventDefault();
+    controlFn(direction, 'off');
+  });
 }
 
+
+/**
+ * Sendet Bewegungssteuerung an den Server
+ * @param {string} direction - Bewegungsrichtung
+ * @param {string} action - Aktion ('on' oder 'off')
+ */
+function controlMovement(direction, action) {
+  socket.emit('movement_control', { direction: direction.toString(), action: action });
+}
+
+/**
+ * Sendet neue Geschwindigkeit an den Server
+ * @param {number} value - Geschwindigkeit (0-100)
+ */
 function sendSpeed(value) {
   socket.emit('set_speed', { speed: value });
 }
 
-function setupHoldButton(buttonId, ledNumber) {
-  const btn = document.getElementById(buttonId);
-    console.log("Button gefunden:", btn?.id); // Debug
 
-  if (!btn) {
-    console.error("Button nicht gefunden:", buttonId);
-    return;
-  }
-
-  // Maussteuerung
-  btn.addEventListener('mousedown', () => controlLED(ledNumber, 'on'));
-  btn.addEventListener('mouseup', () => controlLED(ledNumber, 'off'));
-  btn.addEventListener('mouseleave', () => controlLED(ledNumber, 'off'));
-
-  // Touchsteuerung (Mobile)
-  btn.addEventListener('touchstart', (e) => {
-    e.preventDefault(); // verhindert Textkopieren oder Scrollen
-    controlLED(ledNumber, 'on');
-  });
-
-  btn.addEventListener('touchend', (e) => {
-    e.preventDefault();
-    controlLED(ledNumber, 'off');
-  });
-}
-
-function setupLinButton(buttonId, direction) {
-  const btn = document.getElementById(buttonId);
-    console.log("Button gefunden:", btn?.id); // Debug
-
-  if (!btn) {
-    console.error("Button nicht gefunden:", buttonId);
-    return;
-  }
-
-  // Maussteuerung
-  btn.addEventListener('mousedown', () => controlLin(direction, 'on'));
-  btn.addEventListener('mouseup', () => controlLin(direction, 'off'));
-  btn.addEventListener('mouseleave', () => controlLin(direction, 'off'));
-
-  // Touchsteuerung (Mobile)
-  btn.addEventListener('touchstart', (e) => {
-    e.preventDefault(); // verhindert Textkopieren oder Scrollen
-    controlLin(direction, 'on');
-  });
-
-  btn.addEventListener('touchend', (e) => {
-    e.preventDefault();
-    controlLin(direction,'off');
-  });
-}
-
-
+/**
+ * Steuerung der Walze
+ * @param {string} action - Aktion ('on' oder 'off')
+ */
 function controlWalze(action) {
     socket.emit('walze_control', {
         action: action
     });
 }
 
+/**
+ * Steuerung der Wasserpumpe
+ * @param {string} action - Aktion ('on' oder 'off')
+ */
 function controlWasser(action) {
     socket.emit('wasser_control', {
         action: action
     });
 }
 
-  function controlMotor(action) {
+/**
+ * Steuerung des Motors
+ * @param {string} action - Aktion ('on' oder 'off')
+ */
+function controlMotor(action) {
     socket.emit('motor_control', {
         action: action
     });
-  }
+}
 
-  function controlLin(direction, action) {
+/**
+ * Linearbewegung (z.B. Ein-/Ausfahren)
+ * @param {string} direction - Richtung ('in' oder 'out')
+ * @param {string} action - Aktion ('on' oder 'off')
+ */
+function controlLin(direction, action) {
     socket.emit('Lin_control', {
-        direction: direction.toString(), action: action
+        direction: direction.toString(),
+        action: action
     });
-  }
+}
 
-// Temperaturanzeige empfangen & anzeigen
+
+// Empfang der Temperaturwerte
 socket.on('temperature_update', function(data) {
     document.getElementById('temp').textContent = data.value.toFixed(2) + " °C";
-    
+
+    // Optionaler Warnhinweis (auskommentiert)
     // var temp = data.value;
     // if (temp > 30) {
     //   alert("Warnung: Temperatur über 30°C!");
     // }
 });
 
-// Event empfangen
-  socket.on('movement_status', data => {
-      document.getElementById('status').innerText = data.status;
-  });
+// Bewegungstatus empfangen
+socket.on('movement_status', data => {
+    document.getElementById('status').innerText = data.status;
+});
 
-  socket.on('valve_status', data => {
-      document.getElementById('valvestatus').innerText = data.valvestatus;
-  });
-  
-  socket.on('brush_status', data => {
-      document.getElementById('brushstatus').innerText = data.brushstatus;
-  });
-  
-  socket.on('lin_status', data => {
-      document.getElementById('linstatus').innerText = data.linstatus;
-  });
+// Ventilstatus empfangen
+socket.on('valve_status', data => {
+    document.getElementById('valvestatus').innerText = data.valvestatus;
+});
 
+// Bürstenstatus empfangen
+socket.on('brush_status', data => {
+    document.getElementById('brushstatus').innerText = data.brushstatus;
+});
 
-
-
+// Linearstatus empfangen
+socket.on('lin_status', data => {
+    document.getElementById('linstatus').innerText = data.linstatus;
+});

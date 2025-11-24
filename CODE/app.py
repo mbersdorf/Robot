@@ -19,7 +19,7 @@ import sys
 # --- Eigene Module ---
 from events.init_events import register_all_events, temperature_loop
 from hardware.objects import initialize_hardware
-from hardware.sensors.Distance.sensor_monitor import start_sensor_monitor, stop_sensor_monitor, stop_thread
+from hardware.sensors.Distance.sensor_monitor import stop_sensor_monitor, stop_thread
 # from hardware.sensors.cam.cam import gen_frames
 
 
@@ -44,20 +44,12 @@ initialize_hardware(socketio)
 
 
 # ============================================================
-# 🔹 Events registrieren
+# 🔹 Events registrieren & Hintergrund-Threads starten (Absturzüberwachung, Temperatursensor)
 # ============================================================
 
 # Bindet alle WebSocket-Events (z. B. Steuerung der Walze, Ventil usw.)
 # aus dem Ordner „events“ an.
 register_all_events(socketio)
-
-
-# ============================================================
-# 🔹 Hintergrund-Threads
-# ============================================================
-
-# --- Sensorüberwachung starten (Abgrundsensoren etc.) ---
-start_sensor_monitor()
 
 
 # ============================================================

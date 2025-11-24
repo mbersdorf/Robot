@@ -5,12 +5,12 @@ from hardware import objects
 
 
 def register_movement_button_events(socketio):
-    @socketio.on("led_control")
+    @socketio.on("movement_control")
     def handle_led(data):
-        led_id = data['led']
+        direction = data['direction']
         action = data['action']
 
-        handle_movement(led_id, action)
+        handle_movement(direction, action)
 
     @socketio.on("set_speed")
     def handle_set_speed(data):
@@ -37,16 +37,16 @@ def register_movement_button_events(socketio):
 
 # Logik zur Handhabung der Bewegung
 
-    def handle_movement(led_id, action):
+    def handle_movement(direction, action):
         front_blocked = objects.front_distance_sensor.is_danger()
         back_blocked = objects.back_distance_sensor.is_danger()
 
         # Mappe Bewegungsrichtungen auf Funktionen
         actions = {
-            "1": objects.movement.move_forward,
-            "2": objects.movement.move_backward,
-            "3": objects.movement.turn_right,
-            "4": objects.movement.turn_left
+            "forward": objects.movement.move_forward,
+            "backward": objects.movement.move_backward,
+            "turn_right": objects.movement.turn_right,
+            "turn_left": objects.movement.turn_left
         }
 
         # Standard: wenn "off" -> stop
@@ -55,18 +55,18 @@ def register_movement_button_events(socketio):
             return
 
         # Blockade-Logik
-        if led_id == "1" and front_blocked:
+        if direction == "forward" and front_blocked:
             print("🚫 Bewegung nach vorne blockiert (Frontsensor aktiv)")
             objects.movement.stop()
             return
-        if led_id == "2" and back_blocked:
+        if direction == "backward" and back_blocked:
             print("🚫 Bewegung nach hinten blockiert (Rücksensor aktiv)")
             objects.movement.stop()
             return
 
         # Drehungen immer erlaubt
-        if led_id in ("3", "4") or (led_id == "1" and not front_blocked) or (led_id == "2" and not back_blocked):
-            action_func = actions.get(led_id)
+        if direction in ("turn_right", "turn_left") or (direction == "forward" and not front_blocked) or (direction == "" and not back_blocked):
+            action_func = actions.get(direction)
             if action_func:
                 action_func()
             else:

@@ -45,7 +45,7 @@ def monitor():
                 or (sensor_block_backward and movement_status == "moving_backward"):
                 objects.movement.stop()  # Roboter sofort stoppen
 
-            time.sleep(0.05)  # Kurze Pause, um CPU nicht zu blockieren
+            time.sleep(0.1)  # Kurze Pause, um CPU nicht zu blockieren
         except Exception as e:
             print(f"[SensorMonitor] Fehler: {e}")
             break

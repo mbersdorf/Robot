@@ -7,9 +7,8 @@
 # sudo systemctl enable robot.service
 
 #Skript um das Programm (app.py) zu starten
-cd /home/marcb/Documents/Robot
+cd /home/marcb/Documents/Robot/CODE
 source venv/bin/activate
-cd CODE/
 python3 app.py &
 
 # weiteres Skript starten, das auf Shutdown wartet

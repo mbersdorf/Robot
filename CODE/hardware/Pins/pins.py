@@ -28,10 +28,10 @@ DIR_STEPPER_RIGHT = 23
 STEP_STEPPER_RIGHT = 24
 
 # --- Wassersteuerung ---
-VALVE_PIN = 5
+VALVE_PIN = 6
 
 # --- Walze (Brush) ---
-BRUSH_PIN = 6
+BRUSH_PIN = 5
 
 # --- Linearmotor ---
 LINMOTOR_PIN_ausfahren = 16

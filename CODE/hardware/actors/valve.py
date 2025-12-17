@@ -11,13 +11,13 @@ class Valve:
     def on(self):
         self.output.on()
         self.is_open = True
-        self.socketio.emit('valve_status', {'valvestatus': 'An'})  # Status über SocketIO senden
+        self.socketio.emit('valve_status', {'valvestatus': 'AN'})  # Status über SocketIO senden
         print(f"Ventil eingeschaltet.")
 
     def off(self):
         self.output.off()
         self.is_open = False
-        self.socketio.emit('valve_status', {'valvestatus': 'Aus'})  # Status über SocketIO senden
+        self.socketio.emit('valve_status', {'valvestatus': 'AUS'})  # Status über SocketIO senden
         print(f"Ventil ausgeschaltet.")
 
     def is_on(self):

@@ -40,7 +40,7 @@ class Brush:
         self.output.off()                   # Setzt den GPIO-Pin auf LOW
         self.is_open = False                # Aktualisiert den internen Status
         print(f"Walze ausgeschaltet.")      # Ausgabe zur Statuskontrolle
-        self.socketio.emit('brush_status', {'brushstatus': 'Aus'})  # Status über SocketIO senden
+        self.socketio.emit('brush_status', {'brushstatus': 'AUS'})  # Status über SocketIO senden
 
 
     def is_on(self):

@@ -6,13 +6,14 @@
 # robot.service muss mit folgendem Befehl aktiviert werden:
 # sudo systemctl enable robot.service
 
-#Skript um das Programm (app.py) zu starten
-cd /home/marcb/Documents/Robot/CODE
+
+# #Skript um das Programm (app.py) zu starten
+cd /home/pirobot/Dokumente/Projects/Robot/CODE/
 source venv/bin/activate
 python3 app.py &
 
-# weiteres Skript starten, das auf Shutdown wartet
-# Dient zum Herunterfahren des Raspberrys (auch wenn app.py sich aufhängt)
+# # weiteres Skript starten, das auf Shutdown wartet
+# # Dient zum Herunterfahren des Raspberrys (auch wenn app.py sich aufhängt)
 cd SHUTDOWN/
 exec python3 shutdown.py &
 

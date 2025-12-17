@@ -65,7 +65,7 @@ def register_movement_button_events(socketio):
             return
 
         # Drehungen immer erlaubt
-        if direction in ("turn_right", "turn_left") or (direction == "forward" and not front_blocked) or (direction == "" and not back_blocked):
+        if direction in ("turn_right", "turn_left") or (direction == "forward" and not front_blocked) or (direction == "backward" and not back_blocked):
             action_func = actions.get(direction)
             if action_func:
                 action_func()

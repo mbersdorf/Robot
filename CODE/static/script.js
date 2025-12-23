@@ -124,15 +124,30 @@ function controlLin(direction, action) {
 
 
 // Empfang der Temperaturwerte
-socket.on('temperature_update', function(data) {
-    document.getElementById('temp').textContent = data.value.toFixed(2) + " °C";
+let popupShown = false;
 
-    // Optionaler Warnhinweis (auskommentiert)
-    // var temp = data.value;
-    // if (temp > 30) {
-    //   alert("Warnung: Temperatur über 30°C!");
-    // }
+socket.on('temperature_update', function(data) {
+    const temp = data.value;
+
+    document.getElementById('temp').textContent =
+        temp.toFixed(2) + " °C";
+
+    if (temp > 30 && !popupShown) {
+        document.getElementById('popup').style.display = 'block';
+        document.getElementById('overlay').style.display = 'block';
+        popupShown = true;
+
+        if (navigator.vibrate) {
+            navigator.vibrate([200, 100, 300]);
+        }
+    }
+
+    // Reset, wenn Temperatur wieder ok ist
+    if (temp <= 28) {
+        popupShown = false;
+    }
 });
+
 
 // Bewegungstatus empfangen
 socket.on('movement_status', data => {
@@ -153,3 +168,21 @@ socket.on('brush_status', data => {
 socket.on('lin_status', data => {
     document.getElementById('linstatus').innerText = data.linstatus;
 });
+
+
+
+//  source.addEventListener('warning', function(e) {
+//   document.getElementById('popup').style.display = 'block';
+//   document.getElementById('overlay').style.display = 'block';
+//   navigator.vibrate([200, 100, 300]);
+//  }, false);
+
+
+function closePopup() {
+    const popup = document.getElementById('popup');
+    const overlay = document.getElementById('overlay');
+
+    if (popup) popup.style.display = 'none';
+    if (overlay) overlay.style.display = 'none';
+}
+

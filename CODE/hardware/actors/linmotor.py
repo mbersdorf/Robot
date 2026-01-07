@@ -29,24 +29,24 @@ class Linmotor:
 
     def ausfahren(self):
         """
-        Schaltet den Linearmotor ein.
+        Fährt den Linearmotor aus. Bzw. die Wlaze runter
         """
         self.output_ausfahren.on()                    # Setzt den GPIO-Pin auf HIGH
         self.output_einfahren.off()
         #self.is_open = True                 # Aktualisiert den internen Status
-        self.socketio.emit('lin_status', {'linstatus': 'Ausfahren'})  # Status über SocketIO senden
-        print(f"Linearmotor ausfahren.")  # Ausgabe zur Statuskontrolle
+        self.socketio.emit('lin_status', {'linstatus': 'Runter'})  # Status über SocketIO senden
+        print(f"Linearmotor runterfahren.")  # Ausgabe zur Statuskontrolle
 
 
     def einfahren(self):
         """
-        Schaltet den Linearmotor aus.
+        Fährt den Linearmotor ein. Bzw. die Walze hoch
         """
         self.output_ausfahren.off()                   # Setzt den GPIO-Pin auf LOW
         self.output_einfahren.on()
         #self.is_open = False                # Aktualisiert den internen Status
-        self.socketio.emit('lin_status', {'linstatus': 'Einfahren'})  # Status über SocketIO senden
-        print(f"Linearmotor einfahren.")  # Ausgabe zur Statuskontrolle
+        self.socketio.emit('lin_status', {'linstatus': 'Hoch'})  # Status über SocketIO senden
+        print(f"Linearmotor hochfahren.")  # Ausgabe zur Statuskontrolle
 
     def stop(self):
         """
